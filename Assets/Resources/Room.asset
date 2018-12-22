@@ -1,0 +1,190 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e0b7c6195d71ef40b40c57c933c2cb2, type: 3}
+  m_Name: Room
+  m_EditorClassIdentifier: 
+  param:
+  - num: 2101
+    roomName: "2\u53F7\u9928\u7DCF\u5408\u30E1\u30C7\u30A3\u30A2\u30BB\u30F3\u30BF\u30FC\u4E00\u968E"
+  - num: 2201
+    roomName: "2\u53F7\u9928\u7DCF\u5408\u30E1\u30C7\u30A3\u30A2\u30BB\u30F3\u30BF\u30FC\u4E8C\u968E"
+  - num: 2301
+    roomName: "\u5B66\u7FD2\u30B5\u30DD\u30FC\u30C8\u30BB\u30F3\u30BF\u30FC"
+  - num: 2402
+    roomName: "PC\u6559\u5BA42"
+  - num: 2406
+    roomName: "PC\u6559\u5BA45"
+  - num: 2407
+    roomName: "PC\u6559\u5BA46"
+  - num: 2408
+    roomName: "PC\u6559\u5BA47"
+  - num: 2503
+    roomName: "2503\u6559\u5BA4"
+  - num: 2601
+    roomName: "2601\u6559\u5BA4"
+  - num: 2602
+    roomName: "2602\u6559\u5BA4"
+  - num: 2603
+    roomName: "2603\u6559\u5BA4"
+  - num: 2604
+    roomName: "2604\u6559\u5BA4"
+  - num: 2605
+    roomName: "2605\u6559\u5BA4"
+  - num: 2701
+    roomName: "2701\u6559\u5BA4"
+  - num: 2702
+    roomName: "2702\u6559\u5BA4"
+  - num: 2703
+    roomName: "2703\u6559\u5BA4"
+  - num: 2704
+    roomName: "2704\u6559\u5BA4"
+  - num: 2705
+    roomName: "2705\u6559\u5BA4"
+  - num: 2801
+    roomName: "2801\u6559\u5BA4"
+  - num: 2803
+    roomName: "2803\u6559\u5BA4"
+  - num: 2302
+    roomName: "2\u53F7\u99283\u968E\u5B66\u751F\u30E9\u30A6\u30F3\u30B8"
+  - num: 2902
+    roomName: "2\u53F7\u99289\u968E\u5B66\u751F\u30E9\u30A6\u30F3\u30B8"
+  - num: 5301
+    roomName: "5301\u6559\u5BA4"
+  - num: 5302
+    roomName: "5302\u6559\u5BA4"
+  - num: 5303
+    roomName: "5303\u6559\u5BA4"
+  - num: 5304
+    roomName: "5304\u6559\u5BA4"
+  - num: 5310
+    roomName: "5\u53F7\u99283\u968E\u5B66\u751F\u30E9\u30A6\u30F3\u30B8"
+  - num: 5401
+    roomName: "5401\u6559\u5BA4"
+  - num: 5402
+    roomName: "5402\u6559\u5BA4"
+  - num: 5403
+    roomName: "5403\u6559\u5BA4"
+  - num: 5404
+    roomName: "5404\u6559\u5BA4"
+  - num: 5501
+    roomName: "5501\u6559\u5BA4"
+  - num: 5502
+    roomName: "5502\u6559\u5BA4"
+  - num: 5504
+    roomName: "5504\u6559\u5BA4"
+  - num: 5505
+    roomName: "5505\u6559\u5BA4"
+  - num: 5601
+    roomName: "5601\u5927\u5B66\u9662\u30BC\u30DF\u5BA4"
+  - num: 5602
+    roomName: "5602\u5927\u5B66\u9662\u30BC\u30DF\u5BA4"
+  - num: 5603
+    roomName: "5603\u5927\u5B66\u9662\u30BC\u30DF\u5BA4"
+  - num: 5604
+    roomName: "5604\u5927\u5B66\u9662\u30BC\u30DF\u5BA4"
+  - num: 5605
+    roomName: "5605\u5927\u5B66\u9662\u30BC\u30DF\u5BA4"
+  - num: 5606
+    roomName: "5606\u5927\u5B66\u9662\u30BC\u30DF\u5BA4"
+  - num: 5608
+    roomName: "5\u53F7\u9928\u7DCF\u5408\u30E1\u30C7\u30A3\u30A2\u30BB\u30F3\u30BF\u30FC"
+  - num: 5611
+    roomName: "\u9759\u7C9B\u95B2\u89A7\u30A8\u30EA\u30A22"
+  - num: 5613
+    roomName: "5\u53F7\u99286\u968E\u5B66\u751F\u30E9\u30A6\u30F3\u30B8"
+  - num: 5615
+    roomName: "5615\u5927\u5B66\u9662\u30BC\u30DF\u5BA4"
+  - num: 5701
+    roomName: "\u5171\u540C\u7814\u7A76\u5BA4"
+  - num: 57021
+    roomName: "\u5171\u540C\u7814\u7A76\u5BA4"
+  - num: 5703
+    roomName: "\u533B\u7642\u798F\u7949\u5DE5\u5B66\u7814\u7A76\u5BA4"
+  - num: 5705
+    roomName: "\u97F3\u97FF\u7A7A\u9593\u7814\u7A76\u5BA4"
+  - num: 5706
+    roomName: "\u97F3\u97FF\u30B7\u30B9\u30C6\u30E0\u30C7\u30B6\u30A4\u30F3\u7814\u7A76\u5BA4"
+  - num: 5707
+    roomName: "\u30C7\u30B6\u30A4\u30F3\u30EF\u30FC\u30AF\u30B9\u30DA\u30FC\u30B9"
+  - num: 5713
+    roomName: "\u30D7\u30ED\u30C0\u30AF\u30C8\u30C7\u30B6\u30A4\u30F3\u7814\u7A76\u5BA4"
+  - num: 5715
+    roomName: "\u30AA\u30FC\u30B5\u30EA\u30F3\u30B0\u7814\u7A76\u5BA4"
+  - num: 5716
+    roomName: "\u30E1\u30C7\u30A3\u30A2\u74B0\u5883\u30C7\u30B6\u30A4\u30F3\u7814\u7A76\u5BA4"
+  - num: 5718
+    roomName: "\u30B3\u30F3\u30D4\u30E5\u30FC\u30BF\u30B0\u30E9\u30D5\u30A3\u30C3\u30AF\u30B9\u7814\u7A76\u5BA4"
+  - num: 5719
+    roomName: "\u5171\u540C\u7814\u7A76\u5BA4"
+  - num: 5801
+    roomName: "\u30A4\u30F3\u30BF\u30E9\u30AF\u30B7\u30E7\u30F3\u7814\u7A76\u5BA4"
+  - num: 5803
+    roomName: "\u74B0\u5883\u884C\u52D5\u7814\u7A76\u5BA4"
+  - num: 5804
+    roomName: "\u77E5\u80FD\u30B3\u30F3\u30D4\u30E5\u30FC\u30C6\u30A3\u30F3\u30B0\u7814\u7A76\u5BA4"
+  - num: 5805
+    roomName: "\u4FE1\u53F7\u51E6\u7406\u7814\u7A76\u5BA4"
+  - num: 5814
+    roomName: "\u5148\u7AEF\u8A08\u7B97\u30B7\u30B9\u30C6\u30E0\u7814\u7A76\u5BA4"
+  - num: 5815
+    roomName: "\u60C5\u5831\u5B89\u5168\u6280\u8853\u7814\u7A76\u5BA4"
+  - num: 5816
+    roomName: "\u6697\u53F7\u30B7\u30B9\u30C6\u30E0\u7814\u7A76\u5BA4"
+  - num: 5817
+    roomName: "\u60C5\u5831\u30CD\u30C3\u30C8\u30EF\u30FC\u30AF\u7814\u7A76\u5BA4"
+  - num: 5818
+    roomName: "\u5148\u7AEF\u30CD\u30C3\u30C8\u30EF\u30FC\u30AF\u6280\u8853\u7814\u7A76\u5BA4"
+  - num: 5819
+    roomName: "\u5171\u540C\u7814\u7A76\u5BA4"
+  - num: 5904
+    roomName: "IoT\u30C6\u30AF\u30CE\u30ED\u30B8\u30FC\u7814\u7A76\u5BA4"
+  - num: 5907
+    roomName: "\u30DF\u30FC\u30C6\u30A3\u30F3\u30B0\u30B3\u30FC\u30CA\u30FC"
+  - num: 5908
+    roomName: "\u30CD\u30C3\u30C8\u30AF\u30E9\u30B9\u30EB\u30FC\u30E0C"
+  - num: 5910
+    roomName: "\u30CD\u30C3\u30C8\u30AF\u30E9\u30B9\u30EB\u30FC\u30E0B"
+  - num: 5911
+    roomName: "\u30CD\u30C3\u30C8\u30AF\u30E9\u30B9\u30EB\u30FC\u30E0A"
+  - num: 5914
+    roomName: "\u30BD\u30D5\u30C8\u30A6\u30A7\u30A2\u5DE5\u5B66\u7814\u7A76\u5BA4"
+  - num: 5916
+    roomName: "\u30C7\u30FC\u30BF\u79D1\u5B66\u30FB\u6A5F\u68B0\u5B66\u7FD2\u7814\u7A76\u5BA4"
+  - num: 5918
+    roomName: "\u4FE1\u53F7\u51E6\u7406\u5FDC\u7528\u7814\u7A76\u5BA4"
+  - num: 5919
+    roomName: "\u30E6\u30CB\u30D0\u30FC\u30B5\u30EB\u30BD\u30D5\u30C8\u30A6\u30A7\u30A2\u30FB\u30C7\u30B6\u30A4\u30F3\u7814\u7A76\u5BA4"
+  - num: 5920
+    roomName: "\u5171\u540C\u7814\u7A76\u5BA42"
+  - num: 51001
+    roomName: "\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u5FDC\u7528\u7814\u7A76\u5BA4"
+  - num: 51003
+    roomName: "\u30DE\u30EB\u30C1\u30E1\u30C7\u30A3\u30A2\u30B3\u30F3\u30D4\u30E5\u30FC\u30C6\u30A3\u30F3\u30B0\u7814\u7A76\u5BA4"
+  - num: 51004
+    roomName: "3\u6B21\u5143\u30B0\u30E9\u30D5\u30A3\u30C3\u30AF\u30B9\u7814\u7A76\u5BA4"
+  - num: 51016
+    roomName: "\u8996\u899A\u30B7\u30B9\u30C6\u30E0\u7814\u7A76\u5BA4"
+  - num: 51017
+    roomName: "\u30C7\u30A3\u30B8\u30BF\u30EB\u56DE\u8DEF\u8A2D\u8A08\u7814\u7A76\u5BA4"
+  - num: 51018
+    roomName: "\u60C5\u5831\u901A\u4FE1\u30B5\u30FC\u30D3\u30B9\u7814\u7A76\u5BA4"
+  - num: 51019
+    roomName: "\u5171\u540C\u7814\u7A76\u5BA43"
+  - num: 54051
+    roomName: "5405A\u6559\u5BA4"
+  - num: 54052
+    roomName: "5405B\u6559\u5BA4"
+  - num: 55031
+    roomName: "5503A\u6559\u5BA4"
+  - num: 55032
+    roomName: "5503B\u6559\u5BA4"
+  - num: 59021
+    roomName: "\u751F\u4F53\u4FE1\u53F7\u51E6\u7406\u7814\u7A76\u5BA4"
