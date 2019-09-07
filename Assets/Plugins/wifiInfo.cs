@@ -6,11 +6,12 @@ public class wifiInfo : MonoBehaviour {
     private string[] SSIDs;
     private string[] BSSIDs;
     private int[] RSSIs;
+    private int[] Frequencies;
 
     public wifiInfo()
     {
 #if UNITY_ANDROID
-        AndroidJavaClass ssidManager = new AndroidJavaClass("com.lib.nekketsu.nativeplugin.NativeMethod");
+        AndroidJavaClass ssidManager = new AndroidJavaClass("com.gamecompletecompany.nativeplugin.NativeMethod");
 
         // Context(Activity)オブジェクトを取得する
         AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
@@ -23,6 +24,11 @@ public class wifiInfo : MonoBehaviour {
             SSIDs = ssidManager.CallStatic<string[]>("getSSID", results);
             BSSIDs = ssidManager.CallStatic<string[]>("getBSSID", results);
             RSSIs = ssidManager.CallStatic<int[]>("getRSSI", results);
+            Frequencies = ssidManager.CallStatic<int[]>("getFrequency", results);
+            for(int i = 0; i < SSIDs.Length; i++)
+            {
+                Debug.Log(SSIDs[i] + "," + BSSIDs[i] + "," + RSSIs[i] + "," + Frequencies[i]);
+            }
         }));
 #endif
     }
@@ -31,8 +37,10 @@ public class wifiInfo : MonoBehaviour {
     public string[] getSSIDs() { return SSIDs; }
     public string[] getBSSIDs() { return BSSIDs; }
     public int[] getRSSIs() { return RSSIs; }
+    public int[] getFrequencies() { return Frequencies; }
     public string getSSID(int i) { return SSIDs[i]; }
     public string getBSSID(int i) { return BSSIDs[i]; }
     public int getRSSI(int i) { return RSSIs[i]; }
+    public int getFrequency(int i) { return Frequencies[i]; }
  
 }

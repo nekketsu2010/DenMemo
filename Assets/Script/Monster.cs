@@ -12,8 +12,6 @@ public class Monster : ScriptableObject {
     {
         public string Name;
         public Sprite Image;
-        //ここに装備品のリストを入れるよ
-        public Equipment equipment;
         public int Level = 1;
         public int Hp;
         public int Attack;

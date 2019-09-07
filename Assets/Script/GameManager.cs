@@ -26,15 +26,16 @@ public class GameManager : MonoBehaviour {
     private Monster.Param param;
     private string statusText;
     private int userCount = 0; //ユーザがマスターの部屋の数
+
     // Use this for initialization
     void Start () {
-        monster = Resources.Load<Monster>("Professor/ProfessorList");
-        professorImage.sprite = monster.param.Where(x => x.Name == UserData.HaveNames[0].Name).First().Image;
-        param = monster.param.Where(x => x.Name == UserData.HaveNames[0].Name).First();
-        print(param.Level);
+        //monster = Resources.Load<Monster>("Professor/ProfessorList");
+        //professorImage.sprite = monster.param.Where(x => x.Name == UserData.HaveNames[0].Name).First().Image;
+        //param = monster.param.Where(x => x.Name == UserData.HaveNames[0].Name).First();
+        //print(param.Level);
 
-        userName.text = UserData.userName;
-        renewDB();
+        //userName.text = UserData.userName;
+        //renewDB();
     }
 
     // Update is called once per frame
