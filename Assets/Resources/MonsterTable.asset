@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91a341c5452a19c45a72cbd239780b62, type: 3}
+  m_Name: MonsterTable
+  m_EditorClassIdentifier: 
+  param:
+  - id: f001
+    Name: "\u53F8\u99AC \u9752\u7345"
+    Furigana: "\u30B7\u30D0 \u30BB\u30A4\u30B8"
+    Level: 1
+    MaxHp: 10
+    Hp: 10
+    Attack: 6
+    Defense: 4
+  - id: f003
+    Name: "\u53F8\u99AC \u840C\u9999"
+    Furigana: "\u30B7\u30D0 \u30E2\u30E2\u30AB"
+    Level: 1
+    MaxHp: 10
+    Hp: 10
+    Attack: 4
+    Defense: 6
+  - id: f023
+    Name: "\u767D\u9CE5 \u738B\u5B50"
+    Furigana: "\u30B7\u30E9\u30C8\u30EA \u30AA\u30A6\u30B8"
+    Level: 1
+    MaxHp: 8
+    Hp: 8
+    Attack: 6
+    Defense: 5

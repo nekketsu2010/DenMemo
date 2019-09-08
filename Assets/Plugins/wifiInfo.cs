@@ -25,10 +25,6 @@ public class wifiInfo : MonoBehaviour {
             BSSIDs = ssidManager.CallStatic<string[]>("getBSSID", results);
             RSSIs = ssidManager.CallStatic<int[]>("getRSSI", results);
             Frequencies = ssidManager.CallStatic<int[]>("getFrequency", results);
-            for(int i = 0; i < SSIDs.Length; i++)
-            {
-                Debug.Log(SSIDs[i] + "," + BSSIDs[i] + "," + RSSIs[i] + "," + Frequencies[i]);
-            }
         }));
 #endif
     }
@@ -42,5 +38,19 @@ public class wifiInfo : MonoBehaviour {
     public string getBSSID(int i) { return BSSIDs[i]; }
     public int getRSSI(int i) { return RSSIs[i]; }
     public int getFrequency(int i) { return Frequencies[i]; }
- 
+
+    public string getWifi()
+    {
+        string result = "";
+        for (int i = 0; i < SSIDs.Length; i++)
+        {
+            result += SSIDs[i] + "," + BSSIDs[i] + "," + RSSIs[i] + "," + Frequencies[i];
+            if(i != SSIDs.Length - 1)
+            {
+                result += "\n";
+            }
+        }
+        return result;
+    }
+
 }

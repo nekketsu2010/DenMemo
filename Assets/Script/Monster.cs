@@ -10,9 +10,11 @@ public class Monster : ScriptableObject {
     [System.Serializable]
     public class Param
     {
+        public string id;
         public string Name;
-        public Sprite Image;
+        public string Furigana;
         public int Level = 1;
+        public int MaxHp;
         public int Hp;
         public int Attack;
         public int Defense;

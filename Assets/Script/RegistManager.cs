@@ -6,23 +6,22 @@ using UnityEngine.SceneManagement;
 using NCMB;
 
 public class RegistManager : MonoBehaviour {
-    public InputField userNameText;
+    [Header("Regist")]
+    public InputField userIDText;
+    public InputField mailAddressText;
     public InputField passwordText;
     public Button okButton;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    [Header("Login")]
+    public InputField LuserIDText;
+    public InputField LpasswordText;
+    public Button LokButton;
+    public GameObject incorrectText;
+
 
     public void valueChanged(string text)
     {
-        if (!string.IsNullOrEmpty(userNameText.text) && !string.IsNullOrEmpty(passwordText.text))
+        if (!string.IsNullOrEmpty(userIDText.text) && !string.IsNullOrEmpty(mailAddressText.text) && !string.IsNullOrEmpty(passwordText.text))
         {
             okButton.interactable = true;
         }
@@ -32,12 +31,24 @@ public class RegistManager : MonoBehaviour {
         }
     }
 
+    public void LvalueChanged(string text)
+    {
+        if (!string.IsNullOrEmpty(LuserIDText.text) && !string.IsNullOrEmpty(LpasswordText.text))
+        {
+            LokButton.interactable = true;
+        }
+        else
+        {
+            LokButton.interactable = false;
+        }
+    }
+
     public void okButtonTapped()
     {
         //セーブ及び、データベースに登録
-        UserData.userName = userNameText.text;
         NCMBUser user = new NCMBUser();
-        user.UserName = UserData.userName;
+        user.UserName = userIDText.text;
+        user.Email = mailAddressText.text;
         user.Password = passwordText.text;
         user.SignUpAsync((NCMBException e) =>
         {
@@ -48,13 +59,46 @@ public class RegistManager : MonoBehaviour {
             else
             {
                 Debug.Log("ユーザ登録完了");
-                UserData.userID = user.ObjectId;
                 //セーブ処理
-                SaveData data = new SaveData();
-                SaveData.Save(data);
-                FileController.Save("a", data);
+                SaveData.userID = userIDText.text;
+                PlayerPrefs.SetString("a", SaveData.userID);
                 //セーブ処理ここまで
                 SceneManager.LoadScene("StartScene");
+            }
+        });
+    }
+
+    public void LokButtonTapped()
+    {
+        //ユーザーを検索し，データをロード
+        NCMBUser.LogInAsync(LuserIDText.text, LpasswordText.text, (NCMBException e) =>
+        {
+            if (e != null)
+            {
+                Debug.Log("ログインに失敗しました");
+                incorrectText.SetActive(true);
+            }
+            else
+            {
+                SaveData.userID = LuserIDText.text;
+                NCMBQuery<NCMBObject> query = new NCMBQuery<NCMBObject>("SaveData");
+                query.WhereEqualTo("userID", SaveData.userID);
+                query.Find((List<NCMBObject> objects, NCMBException error) =>
+                {
+                    if (error != null)
+                    {
+                        incorrectText.SetActive(true);
+                    }
+                    else
+                    {
+                        //userIDをローカルセーブ
+                        PlayerPrefs.SetString("a", SaveData.userID);
+
+                        NCMBObject savedata = objects[0];
+                        UserData user = FileController.Load<UserData>(savedata["savedata"].ToString());
+                        SceneManager.LoadScene("MainMenu"); //直接メインメニューへ
+                    }
+                });
             }
         });
     }

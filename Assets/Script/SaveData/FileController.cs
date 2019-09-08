@@ -6,39 +6,19 @@ using System.Runtime.Serialization.Formatters.Binary;
 public class FileController : MonoBehaviour
 {
 
-    public FileController()
-    {
-    }
-
-    public static bool Save<T>(string prefKey, T serializableObject)
+    public static string Save<T>(T serializableObject)
     {
         MemoryStream memoryStream = new MemoryStream();
-#if UNITY_IPHONE || UNITY_IOS
-        System.Environment.SetEnvironmentVariable("MONO_REFLECTION_SERIALIZER", "yes");
-#endif
         BinaryFormatter bf = new BinaryFormatter();
         bf.Serialize(memoryStream, serializableObject);
 
         string tmp = System.Convert.ToBase64String(memoryStream.ToArray());
-        try
-        {
-            PlayerPrefs.SetString(prefKey, tmp);
-        }
-        catch (PlayerPrefsException)
-        {
-            return false;
-        }
-        return true;
+        return tmp;
     }
 
-    public static T Load<T>(string prefKey)
+    public static T Load<T>(string serializedData)
     {
-        if (!PlayerPrefs.HasKey(prefKey)) return default(T);
-#if UNITY_IPHONE || UNITY_IOS
-        System.Environment.SetEnvironmentVariable("MONO_REFLECTION_SERIALIZER", "yes");
-#endif
         BinaryFormatter bf = new BinaryFormatter();
-        string serializedData = PlayerPrefs.GetString(prefKey);
 
         MemoryStream dataStream = new MemoryStream(System.Convert.FromBase64String(serializedData));
         T deserializedObject = (T)bf.Deserialize(dataStream);
@@ -46,23 +26,4 @@ public class FileController : MonoBehaviour
         return deserializedObject;
     }
 
-    public void save(SaveData data)
-    {
-        // 保存用クラスにデータを格納.
-        FileController.Save("{PlayerPrefsに保存するキー}", data);
-        PlayerPrefs.Save();
-    }
-
-    public SaveData load()
-    {
-        SaveData data_tmp = FileController.Load<SaveData>("{PlayerPrefsに保存するキー}");
-        if (data_tmp != null)
-        {
-            return data_tmp;
-        }
-        else
-        {
-            return new SaveData();
-        }
-    }
 }

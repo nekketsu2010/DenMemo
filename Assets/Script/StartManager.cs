@@ -17,33 +17,33 @@ public class StartManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        monster = Resources.Load<Monster>("Professor/ProfessorList");
+        monster = Resources.Load<Monster>("MonsterTable");
     }
 
-// Update is called once per frame
-void Update () {
+    // Update is called once per frame
+    void Update () {
 		
-	}
+    }
 
     public void postInform(Image image)
     {
         SelectCanvas.SetActive(false);
         ConfirmCanvas.SetActive(true);
         this.image.sprite = image.sprite;
-        if (image.gameObject.name.Contains("Ohyama"))
+        if (image.gameObject.name.Contains("f001"))
         {
-            profileText.text = "Name : Ohyama\nHP : 15\nATK : 8\nDEF : 5";
-            param = monster.param.Where(x => x.Name.Contains("大山")).First();
+            param = monster.param.Where(x => x.id.Contains("f001")).First();
+            profileText.text = "Name : " + param.Name + "\nHP : " + param.Hp + "\nATK : " + param.Attack + "\nDEF : " + param.Defense;
         }
-        else if (image.gameObject.name.Contains("Kawakatsu"))
+        else if (image.gameObject.name.Contains("f003"))
         {
-            profileText.text = "Name : Kawakatsu\nHP : 15\nATK : 5\nDEF : 8";
-            param = monster.param.Where(x => x.Name.Contains("川勝")).First();
+            param = monster.param.Where(x => x.id.Contains("f003")).First();
+            profileText.text = "Name : " + param.Name + "\nHP : " + param.Hp + "\nATK : " + param.Attack + "\nDEF : " + param.Defense;
         }
-        else if (image.gameObject.name.Contains("Nemoto"))
+        else if (image.gameObject.name.Contains("f023"))
         {
-            profileText.text = "Name : Nemoto\nHP : 18\nATK : 6\nDEF : 6";
-            param = monster.param.Where(x => x.Name.Contains("根本")).First();
+            param = monster.param.Where(x => x.id.Contains("f023")).First();
+            profileText.text = "Name : " + param.Name + "\nHP : " + param.Hp + "\nATK : " + param.Attack + "\nDEF : " + param.Defense;
         }
     }
 
