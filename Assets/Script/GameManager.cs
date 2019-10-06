@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using NCMB;
+using System;
 
 public class GameManager : MonoBehaviour {
     private wifiInfo wifiInfo;
@@ -33,7 +34,7 @@ public class GameManager : MonoBehaviour {
         professorImage.sprite = Resources.Load<Sprite>("jewel/image/card/" + param.id);
 
         userName.text = UserData.userName;
-        //renewDB();
+        renewDB();
     }
 
     // Update is called once per frame
@@ -59,7 +60,7 @@ public class GameManager : MonoBehaviour {
         WWWForm form = new WWWForm();
         string result = wifiInfo.getWifi();
         form.AddField("rssi", result);
-        WWW www = new WWW(ShareData.masterURL  + "predict", form);
+        WWW www = new WWW(ShareData.masterURL  + "/libsvm/predict", form);
         while (!www.isDone)
         { // ダウンロードの進捗を表示
             progressBar.fillAmount = www.progress;
@@ -68,75 +69,94 @@ public class GameManager : MonoBehaviour {
         progressBar.fillAmount = 0;
         progressBar.gameObject.SetActive(false);
 
-        if (www.error == null)
+        //屋内測位サーバーエラー
+        if (www.error != null)
+        {
+            Debug.LogError(www.error);
+            Debug.Log("屋内測位エラー！");
+        }
+        else
         {
             Debug.Log(www.text);
             result = www.text;
             //部屋番号変換の前にデータベースにアクセスして陣地取り処理を行う
             //部屋番号が返却されていれば文字数は少ないので
-            if (result.Length <= 10)
+            if (result.Length > 10)
+            {
+                Debug.Log("屋内測位サーバーから無効な値が返却されました\n" + result);
+            }
+            else
             {
                 //データベースから部屋番号で検索
                 //QueryTestを検索するクラスを作成
-                NCMBQuery<NCMBObject> query = new NCMBQuery<NCMBObject>("Room");
+                NCMBQuery<NCMBObject> query = new NCMBQuery<NCMBObject>("Access");
                 //Scoreの値が7と一致するオブジェクト検索
-                query.WhereEqualTo("Number", WifiRSSI.isRoomNumber(result));
+                query.WhereEqualTo("roomNumber", WifiRSSI.isRoomNumber(result));
                 query.FindAsync((List<NCMBObject> objList, NCMBException e) => {
                     if (e != null)
                     {
                         //検索失敗時の処理
                         Debug.Log("失敗した！");
+                        return;
                     }
-                    else
-                    {
-                        //Numberがresultのオブジェクトを出力（当然一個しか出ない＜被りがないからね＞）
-                        foreach (NCMBObject obj in objList)
-                        {
-                            //データを取り出す
-                            string masterName = "";
-                            //誰も入っていないとき
-                            if (obj["Master"] != null)
-                            {
-                                masterName = obj["Master"].ToString();
-                            }
-                            int restHp = System.Convert.ToInt32(obj["RestHP"]);
-                            int defense = System.Convert.ToInt32(obj["DEF"]);
-                            Debug.Log("objectId:" + obj["Number"]);
 
-                            //ダメージ計算を行う
-                            //DEF/2を自分のATKから引いたダメージだけ与えることにする（とりあえず）
-                            int ATK = param.Attack - defense / 2;
-                            restHp -= ATK;
-                            //現マスターの残りHPが0以下になったら、もしくはそもそもマスター居ないならマスター交代
-                            if (restHp <= 0 || string.IsNullOrEmpty(masterName))
-                            {
-                                obj["Master"] = UserData.userName;
-                                obj["MasterID"] = UserData.userID;
-                                obj["RestHP"] = param.Hp;
-                                obj["DEF"] = param.Defense;
-                                statusText = "新しくあなたがマスターになりました！";
-                            }
-                            else if (obj["MasterID"].ToString() != UserData.userID)
-                            {
-                                obj["RestHP"] = restHp;
-                                statusText = "マスターに " + ATK + " のダメージを与えました！";
-                            }
-                            else
-                            {
-                                statusText = "すでにあなたがマスターです！";
-                            }
+                    //Numberがresultのオブジェクトを出力（当然一個しか出ない＜被りがないからね＞）
+                    foreach (NCMBObject obj in objList)
+                    {
+                        //データを取り出す
+                        string masterName = "";
+                        //誰も入っていないとき
+                        if (obj["userName"] != null)
+                        {
+                            masterName = obj["userName"].ToString();
+                        }
+                        //陣地のモンスターの読み込み
+                        Monster.Param enemyParam = null;
+                        try
+                        {
+                            enemyParam = FileController.Load<Monster.Param>(obj["monster"].ToString());
+
+                        }
+                        catch (Exception exception)
+                        {
+                            Debug.Log(exception);
+
+                            //ここでExceptionになるということは，この部屋にはMonsterは置かれていないということ
+                            //つまり，自分のMonsterを配置してしまって良いということ
+                            obj["userID"] = UserData.userID;
+                            obj["userName"] = UserData.userName;
+                            obj["monster"] = param;
                             obj.Save();
                         }
+                        int restHp = enemyParam.Hp;
+                        int defense = enemyParam.Defense;
+
+                        //ダメージ計算を行う
+                        //DEF/2を自分のATKから引いたダメージだけ与えることにする（とりあえず）
+                        int ATK = param.Attack - defense / 2;
+                        restHp -= ATK;
+                        //現マスターの残りHPが0以下になったら、もしくはそもそもマスター居ないならマスター交代
+                        if (restHp <= 0 || string.IsNullOrEmpty(masterName))
+                        {
+                            obj["userName"] = UserData.userName;
+                            obj["userID"] = UserData.userID;
+                            obj["monster"] = FileController.Save(param);
+                            statusText = "新しくあなたがマスターになりました！";
+                        }
+                        else if (obj["userID"].ToString() != UserData.userID)
+                        {
+                            obj["RestHP"] = restHp;
+                            statusText = "マスターに " + ATK + " のダメージを与えました！";
+                        }
+                        else
+                        {
+                            statusText = "すでにあなたがマスターです！";
+                        }
+                        obj.Save();
                     }
                 });
+                result = WifiRSSI.isRoom(result);
             }
-
-            result = WifiRSSI.isRoom(result);
-        }
-        else
-        {
-            Debug.LogError(www.error);
-            Debug.Log("うんち");
         }
         accessButton.enabled = true;
         Debug.Log(result);
@@ -161,7 +181,7 @@ public class GameManager : MonoBehaviour {
                 text.text = accessStation.text;
             }
         }
-        RectTransform panel = GameObject.Instantiate<RectTransform>(originPanel);
+        RectTransform panel = Instantiate<RectTransform>(originPanel);
         panel.transform.parent = contents.transform;
         panel.SetAsFirstSibling();
         panel.gameObject.SetActive(true);
@@ -190,52 +210,40 @@ public class GameManager : MonoBehaviour {
         }
         userCount = 0;
         //DBにアクセスして上から下までデータいただく
-        NCMBQuery<NCMBObject> query = new NCMBQuery<NCMBObject>("Room");
+        NCMBQuery<NCMBObject> query = new NCMBQuery<NCMBObject>("Access");
         query.OrderByAscending("count");
         query.FindAsync((List<NCMBObject> objList, NCMBException e) =>
         {
-            if (e == null)
+            if(e != null)
             {
-                //データ取得成功時
-                foreach (NCMBObject obj in objList)
-                {
-                    //マスターが自分だった場合
-                    //if (obj["MasterID"].ToString() == UserData.userID)
-                    //{
-                    //    userCount++;
-                    //    foreach (Text text in originMyDBTexts.GetComponentsInChildren<Text>())
-                    //    {
-                    //        if (text.gameObject.name == "RoomNameText")
-                    //        {
-                    //            text.text = WifiRSSI.isRoom(obj["Number"].ToString());
-                    //        }
-                    //        if (text.gameObject.name == "MasterText")
-                    //        {
-                    //            if (string.IsNullOrEmpty(obj["Master"].ToString()))
-                    //            {
-                    //                text.text = "現在空いています！！！";
-                    //            }
-                    //            else
-                    //            {
-                    //                text.text = obj["Master"].ToString();
-                    //            }
-                    //        }
-                    //        if (text.gameObject.name == "HPText")
-                    //        {
-                    //            text.text = obj["RestHP"].ToString();
-                    //        }
-                    //    }
-                    //    RectTransform myPanel = GameObject.Instantiate<RectTransform>(originMyDBTexts);
-                    //    myPanel.transform.parent = myDBcontents.transform;
-                    //    myPanel.gameObject.SetActive(true);
-                    //}
+                Debug.Log("データベース取得エラー！");
+                return;
+            }
 
-                    //ひとつずつ出力！
-                    foreach (Text text in originDBTexts.GetComponentsInChildren<Text>())
+            //データ取得成功時
+            foreach (NCMBObject obj in objList)
+            {
+                string roomName = WifiRSSI.isRoom(obj["roomNumber"].ToString());
+
+                Monster.Param enemyParam = null;
+                try
+                {
+                   enemyParam = FileController.Load<Monster.Param>(obj["monster"].ToString());
+                }
+                catch (Exception exception)
+                {
+                    Debug.Log(exception);
+                }
+
+                //マスターが自分だった場合
+                if (obj["userID"].ToString() == UserData.userID)
+                {
+                    userCount++;
+                    foreach (Text text in originMyDBTexts.GetComponentsInChildren<Text>())
                     {
                         if (text.gameObject.name == "RoomNameText")
                         {
-                            text.text = WifiRSSI.isRoom(obj["roomNumber"].ToString());                        
+                            text.text = roomName;
                         }
                         if (text.gameObject.name == "MasterText")
                         {
@@ -250,19 +258,57 @@ public class GameManager : MonoBehaviour {
                         }
                         if (text.gameObject.name == "HPText")
                         {
-                            //text.text = obj["RestHP"].ToString();
-                        }                      
+                            try
+                            {
+                                text.text = enemyParam.Hp.ToString();
+                            }
+                            catch (Exception exception)
+                            {
+                                Debug.Log(exception);
+                            }
+                        }
                     }
-                    RectTransform panel = Instantiate<RectTransform>(originDBTexts);
-                    panel.transform.parent = DBcontents.transform;
-                    panel.gameObject.SetActive(true);
+                    RectTransform myPanel = Instantiate<RectTransform>(originMyDBTexts);
+                    myPanel.transform.parent = myDBcontents.transform;
+                    myPanel.gameObject.SetActive(true);
                 }
-                myAccessButton.text = "MyAccess\n" + userCount;
+
+                //ひとつずつ出力！
+                foreach (Text text in originDBTexts.GetComponentsInChildren<Text>())
+                {
+                    if (text.gameObject.name == "RoomNameText")
+                    {
+                        text.text = roomName;
+                    }
+                    if (text.gameObject.name == "MasterText")
+                    {
+                        if (string.IsNullOrEmpty(obj["userID"].ToString()))
+                        {
+                            text.text = "現在空いています！！！";
+                        }
+                        else
+                        {
+                            text.text = obj["userID"].ToString();
+                        }
+                    }
+                    if (text.gameObject.name == "HPText")
+                    {
+                        try
+                        {
+                            text.text = enemyParam.Hp.ToString();
+                        }
+                        catch (Exception exception)
+                        {
+                            Debug.Log(exception);
+                        }
+                    }
+                }
+                RectTransform panel = Instantiate<RectTransform>(originDBTexts);
+                panel.transform.parent = DBcontents.transform;
+                panel.localScale = new Vector3() { x = 1, y = 1, z = 1 };
+                panel.gameObject.SetActive(true);
             }
-            else
-            {
-                Debug.LogError("データベースエラー！ " + e.ErrorCode);
-            }
+            myAccessButton.text = "MyAccess\n" + userCount;
         });
     }
 

@@ -38,9 +38,10 @@ public class TitleManager : MonoBehaviour {
             return;
         }
 
-        if(coroutine == null)
+        if (coroutine == null)
         {
             coroutine = StartCoroutine(getMasterURL());
+            getRoomList();
         }
     }
 
@@ -80,13 +81,13 @@ public class TitleManager : MonoBehaviour {
 
             //プレイヤーの状況で次のシーンを決める
             //ユーザーIDが登録されているか
-            SaveData.userID = PlayerPrefs.GetString("a", "");
-            if (!string.IsNullOrEmpty(SaveData.userID))
+            UserData.userID = PlayerPrefs.GetString("a", "");
+            if (!string.IsNullOrEmpty(UserData.userID))
             {
                 //データが存在したとき
                 //ここでデータのロード
                 NCMBQuery<NCMBObject> query = new NCMBQuery<NCMBObject>("SaveData");
-                query.WhereEqualTo("userID", SaveData.userID);
+                query.WhereEqualTo("userID", UserData.userID);
                 query.Find((List<NCMBObject> objects, NCMBException error) =>
                 {
                     if (error != null)
@@ -95,7 +96,8 @@ public class TitleManager : MonoBehaviour {
                     else
                     {
                         NCMBObject savedata = objects[0];
-                        UserData user = FileController.Load<UserData>(savedata["savedata"].ToString());
+                        SaveData data = FileController.Load<SaveData>(savedata["savedata"].ToString());
+                        SaveData.Load(data);
                         SceneManager.LoadScene("MainMenu"); //直接メインメニューへ
                     }
                 });
@@ -109,4 +111,20 @@ public class TitleManager : MonoBehaviour {
 
         }
     }
+
+    void getRoomList()
+    {
+        ShareData.rooms = new List<ClassRoom>();
+        NCMBQuery<NCMBObject> query = new NCMBQuery<NCMBObject>("Room");
+        query.AddAscendingOrder("count");
+        query.Find((List<NCMBObject> objects, NCMBException e) =>
+        {
+            foreach(NCMBObject nCMBObject in objects)
+            {
+                ClassRoom room = new ClassRoom(nCMBObject["roomGoukan"].ToString(), nCMBObject["roomFloor"].ToString(), nCMBObject["roomNumber"].ToString(), nCMBObject["roomNane"].ToString());
+                ShareData.rooms.Add(room);
+            }
+        });
+    }
+
 }

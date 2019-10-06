@@ -51,6 +51,7 @@ public class StartManager : MonoBehaviour {
     {
         UserData.HaveNames.Add(param);
         print(param.Name);
+        UserData.Save();
         SceneManager.LoadScene("MainMenu");
     }
 }

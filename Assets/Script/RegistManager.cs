@@ -8,6 +8,7 @@ using NCMB;
 public class RegistManager : MonoBehaviour {
     [Header("Regist")]
     public InputField userIDText;
+    public InputField userNameText;
     public InputField mailAddressText;
     public InputField passwordText;
     public Button okButton;
@@ -21,7 +22,7 @@ public class RegistManager : MonoBehaviour {
 
     public void valueChanged(string text)
     {
-        if (!string.IsNullOrEmpty(userIDText.text) && !string.IsNullOrEmpty(mailAddressText.text) && !string.IsNullOrEmpty(passwordText.text))
+        if (!string.IsNullOrEmpty(userIDText.text) && !string.IsNullOrEmpty(userNameText.text) && !string.IsNullOrEmpty(mailAddressText.text) && !string.IsNullOrEmpty(passwordText.text))
         {
             okButton.interactable = true;
         }
@@ -48,6 +49,7 @@ public class RegistManager : MonoBehaviour {
         //セーブ及び、データベースに登録
         NCMBUser user = new NCMBUser();
         user.UserName = userIDText.text;
+        UserData.userName = userNameText.text;
         user.Email = mailAddressText.text;
         user.Password = passwordText.text;
         user.SignUpAsync((NCMBException e) =>
@@ -60,8 +62,8 @@ public class RegistManager : MonoBehaviour {
             {
                 Debug.Log("ユーザ登録完了");
                 //セーブ処理
-                SaveData.userID = userIDText.text;
-                PlayerPrefs.SetString("a", SaveData.userID);
+                UserData.userID = userIDText.text;
+                PlayerPrefs.SetString("a", UserData.userID);
                 //セーブ処理ここまで
                 SceneManager.LoadScene("StartScene");
             }
@@ -80,9 +82,9 @@ public class RegistManager : MonoBehaviour {
             }
             else
             {
-                SaveData.userID = LuserIDText.text;
+                UserData.userID = LuserIDText.text;
                 NCMBQuery<NCMBObject> query = new NCMBQuery<NCMBObject>("SaveData");
-                query.WhereEqualTo("userID", SaveData.userID);
+                query.WhereEqualTo("userID", UserData.userID);
                 query.Find((List<NCMBObject> objects, NCMBException error) =>
                 {
                     if (error != null)
@@ -92,7 +94,7 @@ public class RegistManager : MonoBehaviour {
                     else
                     {
                         //userIDをローカルセーブ
-                        PlayerPrefs.SetString("a", SaveData.userID);
+                        PlayerPrefs.SetString("a", UserData.userID);
 
                         NCMBObject savedata = objects[0];
                         UserData user = FileController.Load<UserData>(savedata["savedata"].ToString());
